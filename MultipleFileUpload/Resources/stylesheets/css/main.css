@@ -1,0 +1,35 @@
+﻿#file-upload-inputs
+{
+    margin-top: 15px;
+    padding: 0;
+}
+
+#file-upload-inputs li
+{
+    list-style-type: none;
+}
+
+div.name {
+	line-height: 31px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	padding-right: 10px;
+}
+
+.delete-link {
+	padding-left: 10px;
+	line-height: 31px;
+}
+
+.error-row {
+	border: 1px solid red;
+}
+
+.file-upload-error {
+	color: red;
+	margin-top: 9px;
+	vertical-align: middle;
+	margin-left: 5px;
+	line-height: 31px;
+}
