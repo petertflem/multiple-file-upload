@@ -39,6 +39,8 @@
 
     function bindDomElementEvents() {
         // Init ajax submission of form
+        // If you don't want ajax submission, comment this out,
+        // and in the view, comment in the form tag with the enctype, mothod, and action attributes set.
         $('#form').ajaxForm({
             url: '/Home/PostFiles',
             type: 'POST',
