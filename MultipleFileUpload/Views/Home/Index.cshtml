@@ -3,12 +3,22 @@
         <div class="col-sm-12">
             <h1>Multiple File Upload</h1>
             <hr />
+            <!--<form id="form" action="/Home/PostFiles" method="POST">-->
             <form id="form">
-                
+                <h2>Image upload</h2>
                 <!-- ... some stuff -->
                 <div id="error-messages"></div>
                 <div id="multiple-file-upload"></div>
                 <!-- some more stuff ... -->
+                
+                <h2>Document upload</h2>
+                <!-- ... some stuff -->
+                <div id="error-messages2"></div>
+                <div id="multiple-file-upload2"></div>
+                <!-- some more stuff ... -->
+                
+                <br />
+                <br />
 
                 <input type="submit" value="submit" />
             </form>
@@ -20,7 +30,7 @@
 <script id="file-upload-row" type="text/template">
     <div>
         <div class="row">
-            <div class="col-xs-7 name">
+            <div class="col-xs-7">
                 <input type="file" title="Choose file" />
             </div>
             <div class="col-xs-3">
@@ -35,5 +45,5 @@
 
 <!-- "add new"-button template -->
 <script id="add-new-button-template" type="text/template">
-    <a href="javascript:void(0)" id="add-new-row">Add new file input thing</a>
+    <a href="javascript:void(0)">Add new file input thing</a>
 </script>

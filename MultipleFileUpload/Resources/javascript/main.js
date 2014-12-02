@@ -1,26 +1,50 @@
 ﻿(function ($) {
 
-    var errorMessageDiv = $('#error-messages');         // The div that contains the error message
+    var errorMessageDiv = $('#error-messages');     // The div that contains the error message
+    var errorMessageDiv2 = $('#error-messages2');   // The div that contains the error message
     
+    // Init image upload
     window.MultipleFileUpload.create({
         containerId: 'multiple-file-upload',
-        addMoreButtonId: 'add-new-button-template',
-        validExtensions: ['txt', 'png', 'jpg'],
+        addNewRowButtonTemplateId: 'add-new-button-template',
+        rowTemplateId: 'file-upload-row',
+        validExtensions: ['png', 'jpg'],
+        fileInputFieldName: 'images',
         rowDeleted: function () {
-            toggleErrorMessageForFileUpload();
+            toggleErrorMessageForFileUpload(errorMessageDiv, 'multiple-file-upload');
         },
         invalidFileType: function (row) {
             $(row).addClass('error-row');
-            toggleErrorMessageForFileUpload();
+            toggleErrorMessageForFileUpload(errorMessageDiv, 'multiple-file-upload');
+        }
+    });
+    
+    // Init document upload
+    window.MultipleFileUpload.create({
+        containerId: 'multiple-file-upload2',
+        addNewRowButtonTemplateId: 'add-new-button-template',
+        rowTemplateId: 'file-upload-row',
+        validExtensions: ['txt', 'doc', 'pdf'],
+        fileInputFieldName: 'documents',
+        rowDeleted: function () {
+            toggleErrorMessageForFileUpload(errorMessageDiv2, 'multiple-file-upload2');
+        },
+        invalidFileType: function (row) {
+            $(row).addClass('error-row');
+            toggleErrorMessageForFileUpload(errorMessageDiv2, 'multiple-file-upload2');
         }
     });
     
     bindDomElementEvents(); // Bind necessary dom element events
 
     function bindDomElementEvents() {
+        // Init ajax submission of form
         $('#form').ajaxForm({
             url: '/Home/PostFiles',
             type: 'POST',
+            beforeSerialize: function () {
+                return isAllFileUploadsValid('multiple-file-upload') && isAllFileUploadsValid('multiple-file-upload2');
+            },
             success: function (response) {
                 $('#feedback').html('Submited: ' + response.submitedFiles);
             },
@@ -30,8 +54,8 @@
         });
     }
     
-    function isAllFileUploadsValid() {
-        return !$('#multiple-file-upload').children().hasClass('error-row');
+    function isAllFileUploadsValid(containerId) {
+        return !$('#' + containerId).children().hasClass('error-row');
     }
 
     function createErrorMessageLabel() {
@@ -39,11 +63,11 @@
             .html('Invalid file type(s) was chosen');
     }
 
-    function toggleErrorMessageForFileUpload() {
-        if (isAllFileUploadsValid())
-            errorMessageDiv.empty();
-        else if (errorMessageDiv.children().length === 0)
-            errorMessageDiv.append(createErrorMessageLabel());
+    function toggleErrorMessageForFileUpload(errorMessageParentDiv, containerId) {
+        if (isAllFileUploadsValid(containerId))
+            errorMessageParentDiv.empty();
+        else if (errorMessageParentDiv.children().length === 0)
+            errorMessageParentDiv.append(createErrorMessageLabel());
     }
 
 })(jQuery);

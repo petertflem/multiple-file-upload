@@ -21,12 +21,23 @@ namespace MultipleFileUpload.Controllers
         // POST: /Home/PostFiles
 
         [HttpPost]
-        public JsonResult PostFiles(IEnumerable<PostedFile> files)
+        public JsonResult PostFiles(IEnumerable<PostedFile> images, IEnumerable<PostedFile> documents)
         {
-            // Just returning some information
-            var fileInformation = files.Select(x => new {filename = x.File.FileName, title = x.Title});
-            return Json(new { submitedFiles = new JavaScriptSerializer().Serialize(fileInformation) });
-        }
+            if (images == null)
+                images = new List<PostedFile>();
 
+            if (documents == null)
+                documents = new List<PostedFile>();
+
+            // Just returning some information
+            var imagesInformation = images.Select(x => new { filename = x.File.FileName, title = x.Title });
+            var documentsInformation = documents.Select(x => new { filename = x.File.FileName, title = x.Title });
+
+            return Json(new
+            {
+                images = new JavaScriptSerializer().Serialize(imagesInformation),
+                documents = new JavaScriptSerializer().Serialize(documentsInformation)
+            });
+        }
     }
 }
