@@ -121,6 +121,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="Global.asax" />
     <Content Include="Resources\javascript\main.js" />
+    <Content Include="Resources\javascript\multiple-file-upload.js" />
     <Content Include="Resources\javascript\vendor\jquery-1.11.1.min.js" />
     <Content Include="Resources\javascript\vendor\jquery.form-3.51.0.min.js" />
     <Content Include="Resources\stylesheets\css\main.css" />
