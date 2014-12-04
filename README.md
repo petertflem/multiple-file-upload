@@ -1,3 +1,5 @@
+# THIS DOCUMENTATION IS STILL INCOMPLETE
+
 # MultipleFileUpload
 
 An example multiple file upload implementation in ASP.NET MVC 4.
@@ -6,19 +8,21 @@ To see how it can be implemented, look in the examples folder.
 ## General information
 
 ### Initialization
-When `multiple-file-upload.js` is run, it attaches it self to the `window` object as `window.MultipleFileUpload`. To create a new multiple file upload, you call the `create` function.
-
-````javascript
-MultipleFileUpload.create();
-```
-
-You can also pass in options. The options are described below.
+When `multiple-file-upload.js` is run, it attaches it self to the `window` object as `window.MultipleFileUpload`. To create a new multiple file upload, you call the `create` function. You will need to pass in at least the required options.
+These are __not__ the default options.
 
 ```javascript
-MultipleFileUpload.create({ ... });
+MultipleFileUpload.create({
+  containerId: 'multiple-pngs-upload-container',                        // required
+  addNewRowButtonTemplateId: 'add-new-row-button-template',             // required
+  rowTemplateId: 'file-upload-row',                                     // requried
+  fileInputFieldName: 'images',                                         // required
+  validExtensions: ['png'],                                             // optional
+  rowDeleted: function() { console.log('Row deleted!'); },              // optional
+  invalidFileType: function () { console.log('Invalid file type!'); },  // optional
+  afterRowCreation: function () { console.log('Row created!'); }        // optional
+});
 ```
-
-At the moment, the module doesn't have any default values. Some options are required. 
 
 ### Templates
 This modules use a very simple template system to define the markup of each row and the button to add more rows.
@@ -62,14 +66,14 @@ Inside the `script` tags you write markup as usual. The `type` attribute doesn't
 These are the default options, the options which are required will need parameters.
 ```javascript
 {
-    validExtensions: [],              // optional
-    containerId: '',                  // required
-    addNewRowButtonTemplateId: '',    // required
-    rowTemplateId: '',                // requried
-    rowDeleted: function() {},        // optional
-    invalidFileType: function () {},  // optional
-    fileInputFieldName: '',           // required
-    afterRowCreation: function () {}  // optional
+  validExtensions: [],              // optional
+  containerId: '',                  // required
+  addNewRowButtonTemplateId: '',    // required
+  rowTemplateId: '',                // requried
+  rowDeleted: function() {},        // optional
+  invalidFileType: function () {},  // optional
+  fileInputFieldName: '',           // required
+  afterRowCreation: function () {}  // optional
 }
 ```
 
