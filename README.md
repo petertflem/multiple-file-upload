@@ -2,7 +2,7 @@
 
 # MultipleFileUpload
 
-An example multiple file upload implementation in ASP.NET MVC 4.
+An example multiple file upload implementation.
 To see how it can be implemented, look in the examples folder.
 
 ## General information
