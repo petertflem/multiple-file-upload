@@ -66,13 +66,14 @@ Inside the `script` tags you write markup as usual. The `type` attribute doesn't
 These are the default options, the options which are required will need parameters.
 ```javascript
 {
-  validExtensions: [],              // optional
+  
   containerId: '',                  // required
   addNewRowButtonTemplateId: '',    // required
   rowTemplateId: '',                // requried
+  fileInputFieldName: '',           // required
+  validExtensions: [],              // optional
   rowDeleted: function() {},        // optional
   invalidFileType: function () {},  // optional
-  fileInputFieldName: '',           // required
   afterRowCreation: function () {}  // optional
 }
 ```
