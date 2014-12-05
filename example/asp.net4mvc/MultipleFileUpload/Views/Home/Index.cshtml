@@ -11,12 +11,6 @@
                 <div id="multiple-file-upload"></div>
                 <!-- some more stuff ... -->
                 
-                <h2>Document upload</h2>
-                <!-- ... some stuff -->
-                <div id="error-messages2"></div>
-                <div id="multiple-file-upload2"></div>
-                <!-- some more stuff ... -->
-                
                 <br />
                 <br />
 
@@ -29,12 +23,12 @@
 <!-- row containing the input field template -->
 <script id="file-upload-row" type="text/template">
     <div>
-        <div class="row">
+        <div class="row" 0>
             <div class="col-xs-7">
-                <input type="file" title="Choose file" />
+                <input type="file" title="Choose file" data-mapping="images.file" />
             </div>
             <div class="col-xs-3">
-                <input type="text" placeholder="Enter a title here" />
+                <input type="text" placeholder="Enter a title here" data-mapping="images.title" />
             </div>
             <div class="col-xs-2 delete-link">
                 <a href="javascript:void(0)">Delete</a>

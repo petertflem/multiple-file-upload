@@ -7,7 +7,6 @@
             rowTemplateId: '',
             rowDeleted: function() {},
             invalidFileType: function () {},
-            fileInputFieldName: '',
             afterRowCreation: function () {}
         };
 
@@ -47,26 +46,27 @@
         }
 
         function mapFilesAndTitles() {
-            // We can't use the $.each index, because there might be 
+            // We can't use the Array.prototype.forEach index, because there might be 
             // empty input fields which we doesn't want to submit. We need
             // a cohesive series of numbers in the name field.
             var inputCounter = 0;
             var rows = get(options.containerId).querySelectorAll('.file-upload-row'); // only css2 selectors in ie8
-
-            Array.prototype.slice.call(rows, 0).forEach(function(element) {
-                var fileAndTitlePair = element.getElementsByTagName('input');
-                var fileInput = fileAndTitlePair[0];
-                var titleInput = fileAndTitlePair[1];
-
-                if (!fileInput.files.length) {
-                    fileInput.removeAttribute('name');
-                    titleInput.removeAttribute('name');
-                } else {
-                    fileInput.setAttribute('name', options.fileInputFieldName + '[' + inputCounter + '].File');
-                    titleInput.setAttribute('name', options.fileInputFieldName + '[' + inputCounter + '].Title');
-                    inputCounter++;
+            var rowsArray = Array.prototype.slice.call(rows, 0);
+            
+            for (var rowIndex = 0; rowIndex < rowsArray.length; rowIndex++) {
+                var inputFields = rowsArray[rowIndex].getElementsByTagName('input');
+                
+                for (var i = 0; i < inputFields.length; i++) {
+                    var input = inputFields[i];
+                    var mapping = input.getAttribute('data-mapping').split('.');
+                    var listName = mapping[0];
+                    var propertyName = mapping[1];
+                    
+                    input.setAttribute('name', listName + '[' + inputCounter + '].' + propertyName);
                 }
-            });
+
+                inputCounter++;
+            }
         }
 
         function isValidFileType(filename) {
