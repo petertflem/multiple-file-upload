@@ -1,3 +1,5 @@
+## Deprecated; please use this: https://github.com/petertflem/multiple-file-upload
+
 # THIS DOCUMENTATION IS STILL INCOMPLETE
 
 # MultipleFileUpload
