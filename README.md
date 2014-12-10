@@ -45,6 +45,9 @@ or
 ```html
 <input type="..." data-mapping="your-list-name.your-property-name" />
 ```
+
+__Only use '.' (dot) to seperate the list name from the property name. Do not use them as part of any other part of the name.__
+
 Since this is made as a _multiple_ file upload, it always posts data from its rows as a list. This means the format of the name of the input field when it is posted will be either `your-list-name[0]` or `your-list-name[0].your-property-name`. The `0` will be incremented for each row the user has added in the html.
 
 ##### Examples
