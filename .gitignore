@@ -32,7 +32,7 @@ TestResults/
 #############
 # Resharper #
 #############
-/_ReSharper.*
+/example/asp.net4mvc/_ReSharper.*
 *.ReSharper.*
 ############
 # Packages #
