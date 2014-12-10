@@ -19,6 +19,8 @@ MultipleFileUpload.create({
   validExtensions: ['png'],                                             // optional
   rowDeleted: function() { console.log('Row deleted!'); },              // optional
   invalidFileType: function () { console.log('Invalid file type!'); },  // optional
+  validFileType: function () { console.log('Valid file type!'); },      // optional
+  inputFieldCleared: function () { console.log('Empty!'); },            // optional
   afterRowCreation: function () { console.log('Row created!'); }        // optional
 });
 ```
@@ -113,13 +115,15 @@ your-list-name[n].your-property-name
 These are the default options, the options which are required will need parameters.
 ```javascript
 {
-  containerId: '',                  // required
-  addNewRowButtonTemplateId: '',    // required
-  rowTemplateId: '',                // requried
-  validExtensions: [],              // optional
-  rowDeleted: function() {},        // optional
-  invalidFileType: function () {},  // optional
-  afterRowCreation: function () {}  // optional
+  containerId: '',                    // required
+  addNewRowButtonTemplateId: '',      // required
+  rowTemplateId: '',                  // requried
+  validExtensions: [],                // optional
+  rowDeleted: function() {},          // optional
+  invalidFileType: function () {},    // optional
+  validFileType: function () {},      // optional
+  inputFieldCleared: function () {},  // optional
+  afterRowCreation: function () {}    // optional
 }
 ```
 
@@ -151,9 +155,20 @@ Function called everytime a row is deleted.
 #### invalidFileType
 _optional_
 
-Function called everytime an invalid file type is detected
+Function called everytime an invalid file type is detected.
+
+#### validFileType
+_optional_
+
+Function called everytime the user selects a valid file.
+
+#### inputFieldCleared
+_optional_
+
+Function called when the user empties the `<input type="file" />` field, e.g. by selecting a new file. The the field
+will be cleared, then populated again with the new file.
 
 #### afterRowCreation
 _optional_
 
-Function called after a row is appended in the DOM, and before I attach my events to the row
+Function called after a row is appended in the DOM, and before I attach my events to the row.
