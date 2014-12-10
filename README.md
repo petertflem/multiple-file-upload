@@ -1,5 +1,4 @@
 # THIS DOCUMENTATION IS STILL INCOMPLETE
-## Not everything here is implemented as described yet. Got some ideas while writing.
 
 # MultipleFileUpload
 
@@ -114,7 +113,6 @@ your-list-name[n].your-property-name
 These are the default options, the options which are required will need parameters.
 ```javascript
 {
-  
   containerId: '',                  // required
   addNewRowButtonTemplateId: '',    // required
   rowTemplateId: '',                // requried
