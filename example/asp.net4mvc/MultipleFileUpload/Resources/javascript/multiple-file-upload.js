@@ -6,8 +6,10 @@
             addNewRowButtonTemplateId: '',
             rowTemplateId: '',
             rowDeleted: function() {},
-            invalidFileType: function () {},
-            afterRowCreation: function () {}
+            invalidFileType: function () { },
+            validFileType: function () { },
+            inputFieldCleared: function () { },
+            afterRowCreation: function () { }
         };
 
         var options = extend(defaultOptions, passedInOptions);
@@ -29,27 +31,30 @@
         function attachNewListElementEventListeners(row) {
             row.getElementsByTagName('a')[0].addEventListener('click', function() {
                 row.parentNode.removeChild(row);
-                mapFilesAndTitles();
+                mapNamesToInputs();
                 options.rowDeleted(); // callback on row deleted
             });
 
+            // Empty the input field before we select a new file. If we have already selected a file,
+            // and then select a new file, the change event won't trigger.
+            row.querySelector('input[type="file"]').addEventListener('click', function() {
+                this.value = null;
+                options.inputFieldCleared(row);
+            });
+
             // only css2 selectors in ie8
-            row.querySelector('input[type="file"]').addEventListener('change', function() {
+            row.querySelector('input[type="file"]').addEventListener('change', function () {
                 var file = this.files[0];
 
                 if (!file)
                     return;
 
-                mapFilesAndTitles();
-                !isValidFileType(file.name) && options.invalidFileType(row); // callback on invalid row
+                mapNamesToInputs();
+                !isValidFileType(file.name) ? options.invalidFileType(row) : options.validFileType(row); // callbacks
             });
         }
 
-        function mapFilesAndTitles() {
-            // We can't use the Array.prototype.forEach index, because there might be 
-            // empty input fields which we doesn't want to submit. We need
-            // a cohesive series of numbers in the name field.
-            var inputCounter = 0;
+        function mapNamesToInputs() {
             var rows = get(options.containerId).querySelectorAll('.file-upload-row'); // only css2 selectors in ie8
             var rowsArray = Array.prototype.slice.call(rows, 0);
             
@@ -58,14 +63,25 @@
                 
                 for (var i = 0; i < inputFields.length; i++) {
                     var input = inputFields[i];
-                    var mapping = input.getAttribute('data-mapping').split('.');
-                    var listName = mapping[0];
-                    var propertyName = mapping[1];
-                    
-                    input.setAttribute('name', listName + '[' + inputCounter + '].' + propertyName);
+                    input.setAttribute('name', getInputName(input, rowIndex));
                 }
+            }
+        }
+        
+        function getInputName(input, inputCounter) {
+            var mapping = input.getAttribute('data-mapping');
+            
+            // list.prop
+            if (~mapping.indexOf('.')) {
+                mapping = mapping.split('.');
+                var listName = mapping[0];
+                var propertyName = mapping[1];
+                return listName + '[' + inputCounter + '].' + propertyName;
+            }
 
-                inputCounter++;
+            // list
+            else {
+                return mapping + '[' + inputCounter + ']';
             }
         }
 

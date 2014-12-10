@@ -14,6 +14,14 @@
         invalidFileType: function (row) {
             $(row).addClass('error-row');
             toggleErrorMessageForFileUpload(errorMessageDiv, 'multiple-file-upload');
+        },
+        validFileType: function (row) {
+            $(row).removeClass('error-row');
+            toggleErrorMessageForFileUpload(errorMessageDiv, 'multiple-file-upload');
+        },
+        inputFieldCleared: function (row) {
+            $(row).removeClass('error-row');
+            toggleErrorMessageForFileUpload(errorMessageDiv, 'multiple-file-upload');
         }
     });
     

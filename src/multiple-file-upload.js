@@ -6,9 +6,10 @@
             addNewRowButtonTemplateId: '',
             rowTemplateId: '',
             rowDeleted: function() {},
-            invalidFileType: function () {},
-            fileInputFieldName: '',
-            afterRowCreation: function () {}
+            invalidFileType: function () { },
+            validFileType: function () { },
+            inputFieldCleared: function () { },
+            afterRowCreation: function () { }
         };
 
         var options = extend(defaultOptions, passedInOptions);
@@ -30,43 +31,58 @@
         function attachNewListElementEventListeners(row) {
             row.getElementsByTagName('a')[0].addEventListener('click', function() {
                 row.parentNode.removeChild(row);
-                mapFilesAndTitles();
+                mapNamesToInputs();
                 options.rowDeleted(); // callback on row deleted
             });
 
+            // Empty the input field before we select a new file. If we have already selected a file,
+            // and then select a new file, the change event won't trigger.
+            row.querySelector('input[type="file"]').addEventListener('click', function() {
+                this.value = null;
+                options.inputFieldCleared(row);
+            });
+
             // only css2 selectors in ie8
-            row.querySelector('input[type="file"]').addEventListener('change', function() {
+            row.querySelector('input[type="file"]').addEventListener('change', function () {
                 var file = this.files[0];
 
                 if (!file)
                     return;
 
-                mapFilesAndTitles();
-                !isValidFileType(file.name) && options.invalidFileType(row); // callback on invalid row
+                mapNamesToInputs();
+                !isValidFileType(file.name) ? options.invalidFileType(row) : options.validFileType(row); // callbacks
             });
         }
 
-        function mapFilesAndTitles() {
-            // We can't use the $.each index, because there might be 
-            // empty input fields which we doesn't want to submit. We need
-            // a cohesive series of numbers in the name field.
-            var inputCounter = 0;
+        function mapNamesToInputs() {
             var rows = get(options.containerId).querySelectorAll('.file-upload-row'); // only css2 selectors in ie8
-
-            Array.prototype.slice.call(rows, 0).forEach(function(element) {
-                var fileAndTitlePair = element.getElementsByTagName('input');
-                var fileInput = fileAndTitlePair[0];
-                var titleInput = fileAndTitlePair[1];
-
-                if (!fileInput.files.length) {
-                    fileInput.removeAttribute('name');
-                    titleInput.removeAttribute('name');
-                } else {
-                    fileInput.setAttribute('name', options.fileInputFieldName + '[' + inputCounter + '].File');
-                    titleInput.setAttribute('name', options.fileInputFieldName + '[' + inputCounter + '].Title');
-                    inputCounter++;
+            var rowsArray = Array.prototype.slice.call(rows, 0);
+            
+            for (var rowIndex = 0; rowIndex < rowsArray.length; rowIndex++) {
+                var inputFields = rowsArray[rowIndex].getElementsByTagName('input');
+                
+                for (var i = 0; i < inputFields.length; i++) {
+                    var input = inputFields[i];
+                    input.setAttribute('name', getInputName(input, rowIndex));
                 }
-            });
+            }
+        }
+        
+        function getInputName(input, inputCounter) {
+            var mapping = input.getAttribute('data-mapping');
+            
+            // list.prop
+            if (~mapping.indexOf('.')) {
+                mapping = mapping.split('.');
+                var listName = mapping[0];
+                var propertyName = mapping[1];
+                return listName + '[' + inputCounter + '].' + propertyName;
+            }
+
+            // list
+            else {
+                return mapping + '[' + inputCounter + ']';
+            }
         }
 
         function isValidFileType(filename) {
